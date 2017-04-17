@@ -20,3 +20,5 @@ Route::get('/list', 'ItemController@index');
 Route::get('/listview', function () {
     return view('list');
 });
+
+Route::get('/listbyjdid', 'ItemController@jd_id');

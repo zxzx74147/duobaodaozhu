@@ -20,6 +20,14 @@ class ItemController extends Controller
         return $items;
     }
 
+    public function jd_id(Request $request)
+    {
+        //
+        $jd_id=$request->get("jd_id");
+        $items=Item::where('jd_item_id',$jd_id)->take(20)->get();
+        return $items;
+    }
+
     /**
      * Show the form for creating a new resource.
      *
