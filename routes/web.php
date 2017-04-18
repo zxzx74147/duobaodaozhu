@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Http\Controllers\ItemController;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,4 +23,8 @@ Route::get('/listview', function () {
     return view('list');
 });
 
-Route::get('/listbyjdid', 'ItemController@jd_id');
+Route::match(['get', 'post'], '/list/jdid', function (Request $request) {
+    $controller = new ItemController();
+    $items = $controller->list_jdid_json($request);
+    return view('list', ['items' => $items]);
+});
