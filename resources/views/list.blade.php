@@ -8,7 +8,9 @@
     </head>
     <body>
 
-    <canvas id="tendChart" width="640" height="360"></canvas>
+    <div id="items" data-items="{{$items}}" ></div>
+    <canvas id="tendChart"  width="1200" height="800" ></canvas>
+
 
     @foreach ($items as $item)
         @component('item', ['item' => $item])
@@ -16,30 +18,39 @@
     @endforeach
 
     <script>
-        var data = {
-            labels : ["January","February","March","April","May","June","July"],
-            datasets : [
-                {
-                    fillColor : "rgba(220,220,220,0.5)",
-                    strokeColor : "rgba(220,220,220,1)",
-                    pointColor : "rgba(220,220,220,1)",
-                    pointStrokeColor : "#fff",
-                    data : [65,59,90,81,56,55,40]
-                },
-                {
-                    fillColor : "rgba(151,187,205,0.5)",
-                    strokeColor : "rgba(151,187,205,1)",
-                    pointColor : "rgba(151,187,205,1)",
-                    pointStrokeColor : "#fff",
-                    data : [28,48,40,19,96,27,100]
-                }
-            ]
-        }
 
-        var ctx = $("#tendChart").get(0).getContext("2d");
-        //This will get the first returned node in the jQuery collection.
-        var myNewChart = new Chart(ctx);
-        myNewChart.PolarArea(data,options);
+        $(document).ready(function(){
+            var items  = $('#items').data("items");
+            var dealPrice=[];
+            var labels = [];
+            var i=0;
+            items.forEach(function (item) {
+                dealPrice.push(item.deal_price);
+                labels.push(i++);
+            });
+            dealPrice.reverse();
+            labels.reverse();
+
+            var data = {
+                labels : labels,
+                datasets : [
+                    {
+                        fillColor : "rgba(220,220,220,0.5)",
+                        strokeColor : "rgba(220,220,220,1)",
+                        pointColor : "rgba(220,220,220,1)",
+                        pointStrokeColor : "#fff",
+                        data : dealPrice,
+                    }
+                ]
+            }
+
+            var ctx = new Chart(document.getElementById("tendChart").getContext("2d"),{
+                type: "line",
+                data: data,
+            });
+            console.info(labels)
+        });
+
     </script>
     </body>
 </html>

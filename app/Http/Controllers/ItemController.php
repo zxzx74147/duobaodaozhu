@@ -29,7 +29,7 @@ class ItemController extends Controller
             return Error::error(Error::$ERROR_PARAM_ERROR);
         }
         $page_value = $request->get("page_value");
-        $items = Item::where('jd_item_id', $jd_id)->orderBy('id', 'desc')->take(20)->get();
+        $items = Item::where('jd_item_id', $jd_id)->orderBy('id', 'desc')->take(30)->get();
         foreach ($items as $item) {
             $item->time = gmdate("Y-m-d H:i:s", $item->time);
         }
