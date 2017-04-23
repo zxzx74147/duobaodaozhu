@@ -21,6 +21,17 @@ class ItemController extends Controller
         return $items;
     }
 
+    public function list_jdid_num(Request $request)
+    {
+        //
+        $jd_id = $request->get("jd_id");
+        if (!$jd_id) {
+            return Error::error(Error::$ERROR_PARAM_ERROR);
+        }
+        $num = Item::where('jd_item_id', $jd_id)->count();
+        return $num;
+    }
+
     public function list_jdid_json(Request $request)
     {
         //

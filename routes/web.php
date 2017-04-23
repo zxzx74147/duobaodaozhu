@@ -28,3 +28,9 @@ Route::match(['get', 'post'], '/list/jdid', function (Request $request) {
     $items = $controller->list_jdid_json($request);
     return view('list', ['items' => $items]);
 });
+
+Route::match(['get', 'post'], '/list/jdid_num', function (Request $request) {
+    $controller = new ItemController();
+    $count = $controller->list_jdid_num($request);
+    return $count;
+});
