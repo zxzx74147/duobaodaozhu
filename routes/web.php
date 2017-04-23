@@ -17,11 +17,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('/list', 'ItemController@index');
 
 Route::get('/listview', function () {
     return view('list');
 });
+
+Route::match(['get', 'post'], '/list/jdid_json', function (Request $request) {
+    $controller = new ItemController();
+    $items = $controller->list_jdid_json($request);
+    return $items;
+});
+
 
 Route::match(['get', 'post'], '/list/jdid', function (Request $request) {
     $controller = new ItemController();

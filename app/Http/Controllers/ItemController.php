@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Item;
+use App\Model\Item;
+use App\Model\ItemJD;
 use App\Model\Error;
 use Illuminate\Http\Request;
 
@@ -39,10 +40,15 @@ class ItemController extends Controller
         if (!$jd_id) {
             return Error::error(Error::$ERROR_PARAM_ERROR);
         }
+
         $page_value = $request->get("page_value");
         $items = Item::where('jd_item_id', $jd_id)->orderBy('id', 'desc')->take(30)->get();
+        $item_jd = ItemJD::where('id', $jd_id)->get();
         foreach ($items as $item) {
             $item->time = gmdate("Y-m-d H:i:s", $item->time);
+            if($item_jd){
+                $item->image=$item_jd[0]->image;
+            }
         }
 
         return $items;
