@@ -34,7 +34,14 @@ Route::match(['get', 'post'], '/list/jdid_json', function (Request $request) {
 Route::match(['get', 'post'], '/list/jdid', function (Request $request) {
     $controller = new ItemController();
     $items = $controller->list_jdid_json($request);
-    return view('list', ['items' => $items]);
+    $analyze = $controller->list_jdid_analyze($request);
+    return view('list', ['items' => $items,'analyze'=>$analyze]);
+});
+
+Route::match(['get', 'post'], '/list/jdid_any', function (Request $request) {
+    $controller = new ItemController();
+    $ret = $controller->list_jdid_analyze($request);
+    return $ret;
 });
 
 Route::match(['get', 'post'], '/list/jdid_num', function (Request $request) {

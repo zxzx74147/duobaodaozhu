@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Error;
 use App\Model\Item;
 use App\Model\ItemJD;
-use App\Model\Error;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+
+    private static $PAGE_NUM = 30;
 
     /**
      * Display a listing of the resource.
@@ -42,16 +44,81 @@ class ItemController extends Controller
         }
 
         $page_value = $request->get("page_value");
-        $items = Item::where('jd_item_id', $jd_id)->orderBy('id', 'desc')->take(30)->get();
+        if (!$page_value || $page_value > 100) {
+            $page_value = ItemController::$PAGE_NUM;
+        }
+        $items = Item::where('jd_item_id', $jd_id)->orderBy('id', 'desc')->take($page_value)->get();
         $item_jd = ItemJD::where('id', $jd_id)->get();
         foreach ($items as $item) {
             $item->time = gmdate("Y-m-d H:i:s", $item->time);
-            if($item_jd){
-                $item->image=$item_jd[0]->image;
+            if (isset($item_jd[0])) {
+                $item->image = $item_jd[0]->image;
             }
         }
-
         return $items;
+    }
+
+    public function list_jdid_analyze(Request $request)
+    {
+        //
+
+        $jd_id = $request->get("jd_id");
+        if (!$jd_id) {
+            return Error::error(Error::$ERROR_PARAM_ERROR);
+        }
+        $page_value = $request->get("page_value");
+        if (!$page_value || $page_value > 100) {
+            $page_value = ItemController::$PAGE_NUM;
+        }
+
+        $count_all = Item::where('jd_item_id', $jd_id)->count();
+        $min = Item::where('jd_item_id', $jd_id)->min('deal_price');
+        $max = Item::where('jd_item_id', $jd_id)->max('deal_price');
+        $avg = Item::where('jd_item_id', $jd_id)->avg('deal_price');
+
+        $items_30_time = Item::where('jd_item_id', $jd_id)->orderBy('id', 'desc')->take($page_value)->get();
+        $count_30_time = count($items_30_time);
+        $min_30_time = 0;
+        $max_30_time = 0;
+        $avg_30_time = 0;
+        foreach ($items_30_time as $item) {
+            if ($min_30_time == 0) {
+                $min_30_time = $item->deal_price;
+            }
+            $min_30_time = min($min_30_time, $item->deal_price);
+            $max_30_time = max($max_30_time, $item->deal_price);
+            $avg_30_time = $avg_30_time + $item->deal_price;
+        }
+        if ($count_30_time > 0) {
+            $avg_30_time = $avg_30_time / $count_30_time;
+        }
+
+
+        $diff_time = 86400 * 30;
+        $now = time();
+        $min_30_day = Item::where('jd_item_id', $jd_id)->where('time', '>', $now - $diff_time)->orderBy('id', 'desc')->min('deal_price');
+        $max_30_day = Item::where('jd_item_id', $jd_id)->where('time', '>', $now - $diff_time)->orderBy('id', 'desc')->max('deal_price');
+        $avg_30_day = Item::where('jd_item_id', $jd_id)->where('time', '>', $now - $diff_time)->orderBy('id', 'desc')->avg('deal_price');
+        $count_30_day = Item::where('jd_item_id', $jd_id)->where('time', '>', $now - $diff_time)->count();
+
+        $ret = array(
+            'count' => $count_all,
+            'min' => $min,
+            'max' => $max,
+            'avg' => number_format($avg,2),
+
+            'count_30_time' => $count_30_time,
+            'min_30_time' => $min_30_time,
+            'max_30_time' => $max_30_time,
+            'avg_30_time' => number_format($avg_30_time,2),
+
+            'count_30_day' => $count_30_day,
+            'min_30_day' => $min_30_day,
+            'max_30_day' => $max_30_day,
+            'avg_30_day' => number_format($avg_30_day,2),
+
+        );
+        return $ret;
     }
 
     public function list_jdid_html(Request $request)
