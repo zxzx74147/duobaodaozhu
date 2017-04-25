@@ -13,6 +13,10 @@ return [
     |
     */
 
-
+    'app_name'=>'夺宝岛主',
+    'home'=>'首页',
+    'random'=>'随便逛逛',
+    'auctioning'=>'当前竞拍',
+    'auctioned'=>'最近成交',
 
 ];

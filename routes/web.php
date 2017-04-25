@@ -14,7 +14,7 @@ use App\Http\Controllers\ItemController;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 
@@ -38,7 +38,7 @@ Route::match(['get', 'post'], '/list/jdid', function (Request $request) {
     return view('list', ['items' => $items,'analyze'=>$analyze]);
 });
 
-Route::match(['get', 'post'], '/list/jdid_any', function (Request $request) {
+Route::match(['get', 'post'], '/list/jdid_analyze', function (Request $request) {
     $controller = new ItemController();
     $ret = $controller->list_jdid_analyze($request);
     return $ret;
@@ -49,3 +49,12 @@ Route::match(['get', 'post'], '/list/jdid_num', function (Request $request) {
     $count = $controller->list_jdid_num($request);
     return $count;
 });
+
+Route::match(['get', 'post'], '/list/latest', function (Request $request) {
+    $controller = new ItemController();
+    $items = $controller->list_latest($request);
+    return view('item_list', ['items' => $items]);
+});
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');

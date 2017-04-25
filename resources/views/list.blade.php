@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ config('app.locale') }}">
 <head>
-    @component('header')
+    @component('head')
 
     @endcomponent
 
@@ -24,6 +24,11 @@
             display: inline;
             float: right;
         }
+        #tendChart {
+            width: 550px;
+            display: inline;
+            float: left;
+        }
     </style>
 </head>
 <body>
@@ -38,7 +43,7 @@
                 <div>
                 <span>
                     <h4>
-                        <a href=https://item.jd.com/{{ $items[0]->jd_id }}.html target="_blank"><p>京东链接</p></a>
+                        <a href=https://item.jd.com/{{ $items[0]->jd_item_id }}.html target="_blank"><p>京东链接</p></a>
                     </h4>
                 </span>
                     <span>
@@ -89,12 +94,12 @@
                 <th>商品状态</th>
             </tr>
             @foreach ($items as $item)
-                @component('item', ['item' => $item])
+                @component('item_table', ['item' => $item])
                 @endcomponent
             @endforeach
         </table>
 
-        <canvas id="tendChart" width="1200" height="800"></canvas>
+        <canvas id="tendChart" width="400" height="400"></canvas>
     </div>
     <script>
 

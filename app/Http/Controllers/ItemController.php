@@ -17,6 +17,16 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public static function convertItems($items){
+        foreach ($items as $item) {
+            $item->time = gmdate("Y-m-d H:i:s", $item->time);
+            if ($item->item_jd) {
+                $item->image = $item->item_jd->image;
+            }
+        }
+    }
+
     public function index()
     {
         //
@@ -35,6 +45,23 @@ class ItemController extends Controller
         return $num;
     }
 
+
+    public function list_latest(Request $request)
+    {
+        $page_number = $request->get("page_number");
+        if (!$page_number || $page_number > 100) {
+            $page_number = 100;
+        }
+        $page_value = $request->get("page_value");
+        if (!$page_value || $page_value > 100) {
+            $page_value = ItemController::$PAGE_NUM;
+        }
+        $items = Item::orderBy('time', 'desc')->offset($page_number)->take($page_value)->get();
+        ItemController::convertItems($items);
+        return $items;
+    }
+
+
     public function list_jdid_json(Request $request)
     {
         //
@@ -48,19 +75,12 @@ class ItemController extends Controller
             $page_value = ItemController::$PAGE_NUM;
         }
         $items = Item::where('jd_item_id', $jd_id)->orderBy('id', 'desc')->take($page_value)->get();
-        $item_jd = ItemJD::where('id', $jd_id)->get();
-        foreach ($items as $item) {
-            $item->time = gmdate("Y-m-d H:i:s", $item->time);
-            if (isset($item_jd[0])) {
-                $item->image = $item_jd[0]->image;
-            }
-        }
+        ItemController::convertItems($items);
         return $items;
     }
 
     public function list_jdid_analyze(Request $request)
     {
-        //
 
         $jd_id = $request->get("jd_id");
         if (!$jd_id) {
@@ -70,7 +90,6 @@ class ItemController extends Controller
         if (!$page_value || $page_value > 100) {
             $page_value = ItemController::$PAGE_NUM;
         }
-
         $count_all = Item::where('jd_item_id', $jd_id)->count();
         $min = Item::where('jd_item_id', $jd_id)->min('deal_price');
         $max = Item::where('jd_item_id', $jd_id)->max('deal_price');
