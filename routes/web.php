@@ -13,8 +13,10 @@
 use App\Http\Controllers\ItemController;
 use Illuminate\Http\Request;
 
-Route::get('/', function () {
-    return view('home');
+Route::get('/', function (Request $request) {
+    $controller = new ItemController();
+    $items = $controller->list_latest($request);
+    return view('home', ['items' => $items]);
 });
 
 
@@ -57,4 +59,8 @@ Route::match(['get', 'post'], '/list/latest', function (Request $request) {
 });
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', function (Request $request) {
+    $controller = new ItemController();
+    $items = $controller->list_latest($request);
+    return view('home', ['items' => $items]);
+});
