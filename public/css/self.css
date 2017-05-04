@@ -1,0 +1,25 @@
+
+#feed {
+    width: 1050px;
+    height: auto;
+    margin: 0 auto;
+}
+
+#preview {
+    width: 358px;
+    height: auto;
+    float: left;
+    display: inline;
+}
+
+#intro_detail {
+    width: 650px;
+    display: inline;
+    float: right;
+}
+
+#tendChart {
+    width: 550px;
+    display: inline;
+    float: left;
+}

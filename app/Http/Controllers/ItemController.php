@@ -11,6 +11,7 @@ class ItemController extends Controller
 {
 
     private static $PAGE_NUM = 30;
+    private static $time_zone = +8;
 
     /**
      * Display a listing of the resource.
@@ -20,7 +21,7 @@ class ItemController extends Controller
 
     public static function convertItems($items){
         foreach ($items as $item) {
-            $item->time = gmdate("Y-m-d H:i:s", $item->time);
+            $item->time = gmdate("Y-m-d H:i:s", $item->time+3600*ItemController::$time_zone);
             if ($item->item_jd) {
                 $item->image = $item->item_jd->image;
             }

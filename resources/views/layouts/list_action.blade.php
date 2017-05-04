@@ -1,29 +1,4 @@
-<style type="text/css">
-    #feed {
-        width: 1050px;
-        height: auto;
-        margin: 0px auto;
-    }
 
-    #preview {
-        width: 358px;
-        height: auto;
-        float: left;
-        display: inline;
-    }
-
-    #intro_detail {
-        width: 650px;
-        display: inline;
-        float: right;
-    }
-
-    #tendChart {
-        width: 550px;
-        display: inline;
-        float: left;
-    }
-</style>
 <div class="container-fluid">
     <div id="items" data-items="{{$items}}"></div>
 
@@ -93,39 +68,5 @@
 
         <canvas id="tendChart" width="400" height="400"></canvas>
     </div>
-    <script>
 
-        $(document).ready(function () {
-            var items = $('#items').data("items");
-            var dealPrice = [];
-            var labels = [];
-            var i = 0;
-            items.forEach(function (item) {
-                dealPrice.push(item.deal_price);
-                labels.push(i++);
-            });
-            dealPrice.reverse();
-            labels.reverse();
-
-            var data = {
-                labels: labels,
-                datasets: [
-                    {
-                        fillColor: "rgba(220,220,220,0.5)",
-                        strokeColor: "rgba(220,220,220,1)",
-                        pointColor: "rgba(220,220,220,1)",
-                        pointStrokeColor: "#fff",
-                        data: dealPrice
-                    }
-                ]
-            };
-
-            var ctx = new Chart(document.getElementById("tendChart").getContext("2d"), {
-                type: "line",
-                data: data
-            });
-            console.info(labels)
-        });
-
-    </script>
 </div>

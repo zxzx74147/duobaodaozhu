@@ -1,7 +1,3 @@
-@component('head')
-
-@endcomponent
-
 <style type="text/css">
     body {
         width: 1050px;
@@ -29,6 +25,7 @@
     }
 
 </style>
+
 <div class="container">
     <div id="feed" class="container-fluid">
         @foreach ($items as $item)
@@ -36,7 +33,7 @@
                 <div class="row">
                     @endif
 
-                    @component('item', ['item' => $item])
+                    @component('layouts.item', ['item' => $item])
                     @endcomponent
 
                     @if ($loop->index%4==3)
