@@ -3,6 +3,8 @@
 @section('content')
     @component('layouts.list_action', ['items' => $items,'analyze'=>$analyze])
     @endcomponent
+    @component('layouts.comment', ['item' => $items[0]])
+    @endcomponent
 @endsection
 
 

@@ -1,5 +1,5 @@
 
-#feed {
+.feed {
     width: 1050px;
     height: auto;
     margin: 0 auto;
@@ -22,4 +22,16 @@
     width: 550px;
     display: inline;
     float: left;
+}
+
+.textarea_comment {
+    padding: 10px;
+    height: 60px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    width: 608px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 20px;
+    color: #ccc;
 }

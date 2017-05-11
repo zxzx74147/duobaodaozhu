@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Model\Error;
 use App\Model\Item;
-use App\Model\ItemJD;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -19,9 +18,10 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public static function convertItems($items){
+    public static function convertItems($items)
+    {
         foreach ($items as $item) {
-            $item->time = gmdate("Y-m-d H:i:s", $item->time+3600*ItemController::$time_zone);
+            $item->time = gmdate("Y-m-d H:i:s", $item->time + 3600 * ItemController::$time_zone);
             if ($item->item_jd) {
                 $item->image = $item->item_jd->image;
             }
@@ -122,20 +122,21 @@ class ItemController extends Controller
         $count_30_day = Item::where('jd_item_id', $jd_id)->where('time', '>', $now - $diff_time)->count();
 
         $ret = array(
+            'jd_id' => $jd_id,
             'count' => $count_all,
             'min' => $min,
             'max' => $max,
-            'avg' => number_format($avg,2),
+            'avg' => number_format($avg, 2),
 
             'count_30_time' => $count_30_time,
             'min_30_time' => $min_30_time,
             'max_30_time' => $max_30_time,
-            'avg_30_time' => number_format($avg_30_time,2),
+            'avg_30_time' => number_format($avg_30_time, 2),
 
             'count_30_day' => $count_30_day,
             'min_30_day' => $min_30_day,
             'max_30_day' => $max_30_day,
-            'avg_30_day' => number_format($avg_30_day,2),
+            'avg_30_day' => number_format($avg_30_day, 2),
 
         );
         return $ret;

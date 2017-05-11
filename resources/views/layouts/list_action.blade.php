@@ -2,7 +2,7 @@
 <div class="container-fluid">
     <div id="items" data-items="{{$items}}"></div>
 
-    <div id="feed">
+    <div class="feed">
         <div>
             <div id="preview"><img width="320" height="320" src="{{$items[0]->image}}"></div>
             <div id="intro_detail">
