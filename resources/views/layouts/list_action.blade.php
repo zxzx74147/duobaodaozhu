@@ -4,7 +4,7 @@
 
     <div class="feed">
         <div>
-            <div id="preview"><img width="320" height="320" src="{{$items[0]->image}}"></div>
+            <div id="preview"><img width="300" height="300" src="{{$items[0]->image}}"></div>
             <div id="intro_detail">
                 <h3>{{$items[0]->item_abs}}</h3>
                 <div>

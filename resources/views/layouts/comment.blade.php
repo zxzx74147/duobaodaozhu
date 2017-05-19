@@ -1,4 +1,4 @@
-<div class="feed">
+<div class="container-fluid feed">
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">评论：</div>
